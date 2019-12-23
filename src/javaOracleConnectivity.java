@@ -52,8 +52,8 @@ public class javaOracleConnectivity {
             CallableStatement myCall = con.prepareCall("{CALL insertingTrigger}");
             myCall.execute();
 
-            //String triggRes = myCall.getString("");
-            System.out.println(psRes);
+            String triggRes = myCall.getString("");
+            System.out.println(triggRes);
 
 
             //close the connection object
