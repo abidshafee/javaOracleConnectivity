@@ -13,6 +13,7 @@ public class javaOracleConnectivity {
                         //here 'orcl' is the service name, 'thin' is the driver,
                         // 'jdbc' is the API, and 'oracle' is the database
 
+
             Statement stmt = con.createStatement();
 
             //execute query
@@ -22,15 +23,19 @@ public class javaOracleConnectivity {
                         rs.getString(2)+"  "+rs.getString(3)
                 + " " + rs.getFloat(4));
 
+
+
             // Specific Query: Query No: 5
-            String Query5 = "select name, semester from instructor i inner join teaches t on i.id = t.id where i.name = 'Dr. Waliur Rahman' and t.semester = 'winter';";
+            //String Query5 = "select name, semester from instructor i inner join teaches t on i.id = t.id where i.name = 'Dr. Waliur Rahman' and t.semester = 'winter';";
 
-            Statement stmtQfive = con.createStatement();
+            PreparedStatement stmtQfive = con.prepareStatement("select name, semester from instructor i inner join teaches t on i.id = t.id where i.name =? and t.semester = ?");
+            stmtQfive.setString(1, "Dr. Waliur Rahman");
+            stmtQfive.setString(2, "winter");
 
-            ResultSet rs2 = stmtQfive.executeQuery(Query5);
-            while (rs2.next())
-                System.out.println(rs2.getString(2) + " " +
-                        rs2.getString(4));
+            ResultSet rs2 = stmtQfive.executeQuery();
+            rs2.next();
+                System.out.println(rs2.getString("name") + " | " +
+                        rs2.getString("semester"));
 
 
             //inserting value to student table
@@ -95,7 +100,9 @@ public class javaOracleConnectivity {
 
             con.close();
         }catch (SQLException sq){
+
             System.err.println(sq.getMessage());
+
         }//endOfTryCatch
         
     }//end main
