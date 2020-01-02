@@ -16,22 +16,25 @@ public class javaOracleConnectivity {
             Statement stmt = con.createStatement();
 
             //execute query
-            ResultSet rs=stmt.executeQuery("select * from student");
+            ResultSet rs = stmt.executeQuery("select * from student");
             while(rs.next())
                 System.out.println(rs.getString(1)+"  "+
                         rs.getString(2)+"  "+rs.getString(3)
                 + " " + rs.getFloat(4));
 
-            String Query5 = "select name from instructor where id = (select t.id from teaches t, course c where c.title = 'advanced database management system' and t.semester = 'winter')";
+            // Specific Query: Query No: 5
+            String Query5 = "select name, semester from instructor i inner join teaches t on i.id = t.id where i.name = 'Dr. Waliur Rahman' and t.semester = 'winter';";
 
-            //Statement stmt2 = con.createStatement();
+            Statement stmtQfive = con.createStatement();
 
-            ResultSet rs2 = stmt.executeQuery(Query5);
-            rs2.next();
-            System.out.println(rs2.getString("NAME"));
+            ResultSet rs2 = stmtQfive.executeQuery(Query5);
+            while (rs2.next())
+                System.out.println(rs2.getString(2) + " " +
+                        rs2.getString(4));
 
 
             //inserting value to student table
+          /*
             String insertSql = "insert into student values (?,?,?,?)";
 
             PreparedStatement prstmt = con.prepareStatement(insertSql);
@@ -42,6 +45,18 @@ public class javaOracleConnectivity {
             prstmt.setFloat(4, (float) 136.5);
             prstmt.executeQuery();
 
+         */
+
+          /*
+            //Deleting data from table
+            String delData = "delete from student where id like '%065'";
+
+            Statement stmt2 = con.createStatement();
+
+            int rowAffectedFeed = stmt2.executeUpdate(delData);
+            System.out.println(rowAffectedFeed + " row deleted");
+
+           */
 
             /*
                PL/SQL Trigger: on Student Table
@@ -68,13 +83,16 @@ public class javaOracleConnectivity {
             */
 
           //Calling PL/SQL in java
+            /*
             CallableStatement myCall = con.prepareCall("{CALL log_insertingTrigger}");
             myCall.execute();
 
             String trigRs = myCall.getString("{}");
             System.out.println(trigRs);
+            */
 
             //close the connection object
+
             con.close();
         }catch (SQLException sq){
             System.err.println(sq.getMessage());
